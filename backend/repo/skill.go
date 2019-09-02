@@ -55,7 +55,6 @@ func Count(cache cache.Cache) int {
 	}
 	repository, _ := conf.GetMongoCollection("skill")
 	totalElements, _ := repository.Find(nil).Count()
-
 	addCache(query, totalElements, cache)
 
 	return totalElements
