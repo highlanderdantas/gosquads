@@ -38,11 +38,11 @@ func PageSkills(ctx *contx.Context) {
 	if description := ctx.Query("description"); description != "" {
 		query = description
 	}
-	skills, err := repo.FindAllPageable(query, pageable, ctx.Cache)
+	content, err := repo.FindAllPageable(query, pageable, ctx.Cache)
 	if err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
-	ctx.JSON(http.StatusOK, skills)
+	ctx.JSON(http.StatusOK, content)
 }

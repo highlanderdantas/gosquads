@@ -30,7 +30,7 @@ func FindAll(description string, cache cache.Cache) ([]model.Skill, error) {
 }
 
 //FindAllPageable todas skills paginadas
-func FindAllPageable(description string, pageable model.Pageable, cache cache.Cache) ([]model.Skill, error) {
+func FindAllPageable(description string, pageable model.Pageable, cache cache.Cache) (model.Content, error) {
 	skills := []model.Skill{}
 	repository, err := conf.GetMongoCollection("skill")
 	if description == "" {
@@ -38,12 +38,32 @@ func FindAllPageable(description string, pageable model.Pageable, cache cache.Ca
 	} else {
 		repository.Find(bson.M{"description": bson.RegEx{Pattern: description, Options: "i"}}).Skip(pageable.Page).Limit(pageable.Size).All(&skills)
 	}
-	return skills, err
+
+	content := model.Content{
+		Content:       skills,
+		TotalElements: Count(cache),
+		Pageable:      pageable,
+	}
+	return content, err
+}
+
+//Count traz a quantidade de registros
+func Count(cache cache.Cache) int {
+	query := "cacheCountSkills"
+	if cache.IsExist(query) {
+		return cache.Get(query).(int)
+	}
+	repository, _ := conf.GetMongoCollection("skill")
+	totalElements, _ := repository.Find(nil).Count()
+
+	addCache(query, totalElements, cache)
+
+	return totalElements
 }
 
 //addCache Adicionar skills em cache
-func addCache(query string, skills []model.Skill, cache cache.Cache) {
+func addCache(query string, content interface{}, cache cache.Cache) {
 	s := fmt.Sprintf("%.0f", (time.Hour * 4).Seconds())
 	timeout, _ := strconv.Atoi(s)
-	cache.Put(query, skills, int64(timeout))
+	cache.Put(query, content, int64(timeout))
 }
