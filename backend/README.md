@@ -11,9 +11,6 @@ Middlewares and routes configuration
 /handler
 HTTP handlers
 
-/locale
-Language specific content bundles
-
 /lib
 Common libraries to be used across your app
 
