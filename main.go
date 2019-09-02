@@ -13,13 +13,6 @@ func main() {
 	app := macaron.New()
 	conf.SetupMiddlewares(app)
 	conf.SetupRoutes(app)
-	/*
-		Generated using http://www.kammerl.de/ascii/AsciiSignature.php - (Font: 'starwars')
-		All signatures are made with FIGlet (c) 1991, 1993, 1994 Glenn Chappell and Ian Chai
-		All fonts are taken from figlet.org and jave.de.
-		Please check for Font Credits the figlet font database!
-		Figlet Frontend - Written by Julius Kammerl - 2005
-	*/
 	log.Println(`
 	_____                                       _      
 	|  __ \                                     | |     
