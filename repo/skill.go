@@ -25,6 +25,19 @@ func FindAll(description string, cache cache.Cache) ([]model.Skill, error) {
 	} else {
 		repository.Find(bson.M{"description": bson.RegEx{Pattern: description, Options: "i"}}).All(&skills)
 	}
+	addCache(description, skills, cache)
+	return skills, err
+}
+
+//FindAllPageable todas skills paginadas
+func FindAllPageable(description string, pageable model.Pageable, cache cache.Cache) ([]model.Skill, error) {
+	skills := []model.Skill{}
+	repository, err := conf.GetMongoCollection("skill")
+	if description == "" {
+		repository.Find(nil).Skip(pageable.Page).Limit(pageable.Size).All(&skills)
+	} else {
+		repository.Find(bson.M{"description": bson.RegEx{Pattern: description, Options: "i"}}).Skip(pageable.Page).Limit(pageable.Size).All(&skills)
+	}
 	return skills, err
 }
 

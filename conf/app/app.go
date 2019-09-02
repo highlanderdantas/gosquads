@@ -49,6 +49,9 @@ func SetupRoutes(app *macaron.Macaron) {
 	app.Get("", func() string {
 		return "Lets gosquads!"
 	})
-	app.Get("/skill", handler.ListSkills)
+	app.Group("/skill", func() {
+		app.Get("", handler.ListSkills)
+		app.Get("/page", handler.PageSkills)
+	})
 
 }
