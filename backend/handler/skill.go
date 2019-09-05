@@ -46,3 +46,41 @@ func PageSkills(ctx *contx.Context) {
 	}
 	ctx.JSON(http.StatusOK, content)
 }
+
+//GetSkill pega uma skill
+func GetSkill(ctx *contx.Context) {
+	id := ctx.Params("id")
+	skill, err := repo.GetSkill(id, ctx.Cache)
+	if err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, skill)
+}
+
+//DeleteSkill deleta uma skill
+func DeleteSkill(ctx *contx.Context) {
+	id := ctx.Params("id")
+	err := repo.DeleteSkill(id)
+	if err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, "Skill deletada com sucesso!")
+}
+
+//AddSkill adiciona um skill
+func AddSkill(ctx *contx.Context) {
+	body := ctx.GetBody(model.Skill{})
+	err := repo.AddSkill(body)
+	if err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+	ctx.JSON(http.StatusOK, "Skill adicionada com sucesso")
+}

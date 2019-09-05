@@ -47,6 +47,31 @@ func FindAllPageable(description string, pageable model.Pageable, cache cache.Ca
 	return content, err
 }
 
+//GetSkill pega uma skill
+func GetSkill(id string, cache cache.Cache) (model.Skill, error) {
+	skill := model.Skill{}
+	query := "getskill:" + id
+
+	if cache.IsExist(query) {
+		skill = cache.Get(query).(model.Skill)
+		return skill, nil
+	}
+
+	repository, err := conf.GetMongoCollection("skill")
+	repository.FindId(bson.ObjectIdHex(id)).One(&skill)
+	addCache(query, skill, cache)
+
+	return skill, err
+}
+
+//DeleteSkill Deleta uma skill
+func DeleteSkill(id string) error {
+	repository, err := conf.GetMongoCollection("skill")
+	err = repository.RemoveId(bson.ObjectIdHex(id))
+
+	return err
+}
+
 //Count traz a quantidade de registros
 func Count(cache cache.Cache) int {
 	query := "cacheCountSkills"
@@ -58,6 +83,13 @@ func Count(cache cache.Cache) int {
 	addCache(query, totalElements, cache)
 
 	return totalElements
+}
+
+//AddSkill teste
+func AddSkill(body interface{}) error {
+	repository, _ := conf.GetMongoCollection("skill")
+	err := repository.Insert(body)
+	return err
 }
 
 //addCache Adicionar skills em cache

@@ -51,7 +51,10 @@ func SetupRoutes(app *macaron.Macaron) {
 	})
 	app.Group("/skill", func() {
 		app.Get("", handler.ListSkills)
+		app.Get("/:id", handler.GetSkill)
+		app.Post("", handler.AddSkill)
 		app.Get("/page", handler.PageSkills)
+		app.Delete("/:id", handler.DeleteSkill)
 	})
 
 }

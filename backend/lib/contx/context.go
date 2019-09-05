@@ -106,3 +106,18 @@ GetContext Get system context
 func GetContext() *Context {
 	return ctx
 }
+
+//GetBody converte o corpo da requisição
+func (ctx *Context) GetBody(model interface{}) interface{} {
+	body, err := ctx.Req.Body().Bytes()
+	defer ctx.Req.Body().ReadCloser()
+	err = json.Unmarshal(body, &model)
+
+	if err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		log.Println(err)
+		return nil
+	}
+
+	return model
+}
