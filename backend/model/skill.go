@@ -7,3 +7,9 @@ type Skill struct {
 	ID          bson.ObjectId `bson:"_id" json:"id"`
 	Description string        `bson:"description" json:"description"`
 }
+
+//SkillDTO DTO
+type SkillDTO struct {
+	ID          string `bson:"_id" json:"id"`
+	Description string `bson:"description" json:"description"`
+}

@@ -57,4 +57,9 @@ func SetupRoutes(app *macaron.Macaron) {
 		app.Delete("/:id", handler.DeleteSkill)
 	})
 
+	app.Group("/user", func() {
+		app.Post("", handler.AddUser)
+		app.Get("", handler.ListUsers)
+	})
+
 }

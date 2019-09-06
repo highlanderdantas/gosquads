@@ -16,7 +16,7 @@ func ListSkills(ctx *contx.Context) {
 	if description := ctx.Query("description"); description != "" {
 		query = description
 	}
-	skills, err := repo.FindAll(query, ctx.Cache)
+	skills, err := repo.ListSkill(query, ctx.Cache)
 	if err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		log.Println(err)
@@ -38,7 +38,7 @@ func PageSkills(ctx *contx.Context) {
 	if description := ctx.Query("description"); description != "" {
 		query = description
 	}
-	content, err := repo.FindAllPageable(query, pageable, ctx.Cache)
+	content, err := repo.PageSkill(query, pageable, ctx.Cache)
 	if err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		log.Println(err)

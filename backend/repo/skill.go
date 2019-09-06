@@ -12,8 +12,8 @@ import (
 	"github.com/highlanderdantas/gosquads/backend/model"
 )
 
-//FindAll todas skills
-func FindAll(description string, cache cache.Cache) ([]model.Skill, error) {
+//ListSkill todas skills
+func ListSkill(description string, cache cache.Cache) ([]model.Skill, error) {
 	skills := []model.Skill{}
 	if cache.IsExist(description) {
 		skills = cache.Get(description).([]model.Skill)
@@ -29,8 +29,8 @@ func FindAll(description string, cache cache.Cache) ([]model.Skill, error) {
 	return skills, err
 }
 
-//FindAllPageable todas skills paginadas
-func FindAllPageable(description string, pageable model.Pageable, cache cache.Cache) (model.Content, error) {
+//PageSkill todas skills paginadas
+func PageSkill(description string, pageable model.Pageable, cache cache.Cache) (model.Content, error) {
 	skills := []model.Skill{}
 	repository, err := conf.GetMongoCollection("skill")
 	if description == "" {
